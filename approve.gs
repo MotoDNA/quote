@@ -36,8 +36,24 @@ function clean_(v, max) {
   return s;
 }
 
+// 텔레그램 연결 점검: …/exec?action=tgtest 로 열면 결과를 보여 줍니다 (토큰 값은 보여 주지 않음)
+function tgTest_() {
+  const props = PropertiesService.getScriptProperties();
+  const token = (props.getProperty('TELEGRAM_TOKEN') || '').trim(), chat = (props.getProperty('TELEGRAM_CHAT_ID') || '').trim();
+  const res = { hasToken: !!token, hasChatId: !!chat, savedNames: props.getKeys() };
+  if (!token || !chat) return res;
+  const r = UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+    method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+    payload: JSON.stringify({ chat_id: chat, text: '[ONEMILL] 견적 승인 알림 텔레그램 연결 시험입니다.' })
+  });
+  res.telegramStatus = r.getResponseCode();
+  try { res.telegramMessage = JSON.parse(r.getContentText()).description || 'ok'; } catch (err) {}
+  return res;
+}
+
 function doGet(e) {
   const p = (e && e.parameter) || {};
+  if (p.action === 'tgtest') return out_(tgTest_());
   if (p.action === 'status' && p.key) {
     const r = find_(String(p.key).slice(0, 64));
     return out_({ ok: true, approved: !!r, at: r ? new Date(r[0]).toISOString() : null, name: r ? r[5] : null });
@@ -75,7 +91,7 @@ function doPost(e) {
         lines.join('\n') + '\n\n승인한 견적서 보기:\n' + clean_(d.url, 5000));
     } catch (err) {}
     const props = PropertiesService.getScriptProperties();
-    const token = props.getProperty('TELEGRAM_TOKEN'), chat = props.getProperty('TELEGRAM_CHAT_ID');
+    const token = (props.getProperty('TELEGRAM_TOKEN') || '').trim(), chat = (props.getProperty('TELEGRAM_CHAT_ID') || '').trim();
     if (token && chat) {
       try {
         UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
