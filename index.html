@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>웹사이트 제작 견적서 | ONEMILL</title>
+<meta property="og:title" content="디엔에이랩스 웹사이트 제작 견적서">
+<meta property="og:description" content="견적 내용을 확인하고 PDF·이미지로 저장하거나 승인할 수 있습니다.">
+<style>
+  :root{--ink:#16181d;--sub:#5b6270;--line:#d9d9de;--head:#f2f2f4;--bg:#eceef1;--accent:#1f3a8a;--ok:#12805c}
+  *{box-sizing:border-box;min-width:0}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
+  .bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #dde0e5;padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .brand{font-size:12px;letter-spacing:.16em;font-weight:700;color:var(--sub);margin-right:auto}
+  .btn{font:inherit;font-size:14px;min-height:42px;padding:0 15px;border-radius:9px;border:1px solid #cfd4dc;background:#fff;color:var(--ink);cursor:pointer}
+  .btn.pri{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+  .btn[disabled]{opacity:.55;cursor:default}
+  .btn:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid rgba(31,79,216,.3);outline-offset:1px}
+  .banner{display:none;max-width:794px;margin:14px auto 0;padding:12px 14px;border-radius:10px;font-size:14px}
+  .banner.show{display:block}.banner.ok{background:#e7f6ef;color:var(--ok)}.banner.err{background:#fdecea;color:#c0392b}.banner.info{background:#eef3ff;color:#1f3fa8}
+  .wrap{padding:16px 10px 60px}
+  .paper{background:#fff;color:var(--ink);max-width:794px;margin:0 auto;padding:48px 52px;box-shadow:0 2px 18px #0002}
+  h1{font-size:28px;line-height:1.2;margin:0 0 6px;letter-spacing:-.5px}
+  .lead{margin:0 0 26px;color:#333}
+  h2{font-size:18px;margin:30px 0 10px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:var(--head);font-weight:500}
+  .kv th{width:170px}
+  .num{text-align:right;white-space:nowrap}
+  .pk,.opt{table-layout:fixed}
+  .pk td.off,.pk th.off,tr.off td{color:#b4b5bb}
+  .pk td.on,.pk th.on,tr.on td{font-weight:700;color:var(--ink)}
+  .pk th.on{background:#e6ebfa}
+  .pk tr:first-child th:not(:first-child){text-align:center}
+  .pk td:first-child,.pk th:first-child{font-weight:400;color:var(--ink)}
+  .pk s{color:#9a9ba2;font-weight:400}
+  .ck{display:inline-flex;align-items:flex-start;gap:6px}
+  .box{width:16px;height:16px;border:1.5px solid #555;border-radius:3px;display:inline-grid;place-items:center;flex:none;background:#fff;margin-top:3px}
+  .on .box{background:var(--accent);border-color:var(--accent)}
+  .on .box::after{content:"";width:8px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:translateY(-1px) rotate(-45deg)}
+  .total td{font-weight:700;background:#f6f7fb}
+  .amt{max-width:380px}
+  .note{font-size:12.5px;color:var(--sub);margin:6px 0 0}
+  ul{padding-left:20px;margin:6px 0}li{margin:3px 0}
+  .sign{margin-top:18px}.sign p{margin:4px 0}.sign img{display:block;width:100%;height:auto}
+  .scroll{overflow-x:auto}
+  .approved{margin-top:16px;padding:10px 12px;border:2px solid var(--ok);color:var(--ok);border-radius:8px;font-weight:700;display:none}
+  .approved.show{display:block}
+  /* 승인 창 */
+  .dim{position:fixed;inset:0;background:#0007;z-index:20;display:none;align-items:flex-end;justify-content:center}
+  .dim.show{display:flex}
+  .sheet{background:#fff;width:100%;max-width:520px;border-radius:16px 16px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom))}
+  @media(min-width:600px){.dim{align-items:center}.sheet{border-radius:16px}}
+  .sheet h3{margin:0 0 4px;font-size:18px}
+  .sheet label{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}
+  .sheet input[type=text],.sheet input[type=tel],.sheet textarea{width:100%;border:1px solid #cfd4dc;border-radius:10px;padding:11px 12px;font:inherit;font-size:16px}
+  .sheet textarea{min-height:80px;resize:vertical}
+  .agree{display:flex;gap:8px;align-items:flex-start;margin-top:14px;font-size:14px}
+  .agree input{width:20px;height:20px;margin-top:2px}
+  .row{display:flex;gap:8px;margin-top:16px}.row .btn{flex:1}
+  .exporting .paper{box-shadow:none;padding:0 4px}
+  .exporting .approved{display:none}
+  .empty{max-width:520px;margin:60px auto;text-align:center;color:var(--sub)}
+  @media(max-width:640px){.paper{padding:24px 14px}.kv th{width:104px}table{font-size:12px}th,td{padding:5px 6px}h1{font-size:22px}h2{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <span class="brand">ONEMILL · 디엔에이랩스</span>
+  <button class="btn" id="bPdf" type="button">PDF로 저장</button>
+  <button class="btn" id="bImg" type="button">이미지로 저장</button>
+  <button class="btn pri" id="bOk" type="button">견적 승인하기</button>
+</div>
+<div class="banner" id="banner"></div>
+<div class="wrap" id="wrap"></div>
+
+<div class="dim" id="dim" role="dialog" aria-modal="true" aria-labelledby="dlgT">
+  <form class="sheet" id="form">
+    <h3 id="dlgT">견적 승인</h3>
+    <p class="note" id="dlgSum"></p>
+    <label for="aName">승인하시는 분 성함</label>
+    <input type="text" id="aName" required autocomplete="name">
+    <label for="aTel">연락처 <span class="note">(선택)</span></label>
+    <input type="tel" id="aTel" autocomplete="tel">
+    <label for="aMemo">전달할 말씀 <span class="note">(선택)</span></label>
+    <textarea id="aMemo" placeholder="예: 계약서 보내 주세요"></textarea>
+    <label class="agree"><input type="checkbox" id="aAgree"> 위 견적 내용을 확인했으며, 이 견적으로 진행하는 데 동의합니다.</label>
+    <div class="row"><button class="btn" type="button" id="aNo">취소</button><button class="btn pri" type="submit" id="aGo">승인하기</button></div>
+    <p class="note" id="aMsg"></p>
+  </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+{
+// 견적 승인 알림을 받는 구글 앱스 스크립트 주소 (approve.gs 배포 후 넣기)
+const APPROVE_URL = '';
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const won=n=>'₩'+Math.round(Number(n)||0).toLocaleString('ko-KR');
+const banner=(t,k)=>{const b=$('banner');b.textContent=t;b.className='banner show '+k;};
+
+async function decode(h){
+  const kind=h[0],body=h.slice(1).replace(/-/g,'+').replace(/_/g,'/');
+  const bin=Uint8Array.from(atob(body+'==='.slice((body.length+3)%4)),c=>c.charCodeAt(0));
+  let txt;
+  if(kind==='z'){const ds=new DecompressionStream('deflate-raw');const st=new Blob([bin]).stream().pipeThrough(ds);txt=await new Response(st).text();}
+  else txt=new TextDecoder().decode(bin);
+  return JSON.parse(txt);
+}
+async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].slice(0,10).map(x=>x.toString(16).padStart(2,'0')).join('')}
+
+function render(D){
+  const P=D.P,O=D.O,S=D.q;S.ed=S.ed||{};S.pr=S.pr||{};
+  const price=i=>S.pr[i]!=null?S.pr[i]:P[i].price;
+  const ov=(i,k)=>S.ed[i]&&S.ed[i][k]!=null&&S.ed[i][k]!==''?S.ed[i][k]:null;
+  const val=(i,k)=>{const v=ov(i,k);return v!=null?v:(P[i][k]||'포함')};
+  const strike=i=>price(i)!==P[i].price?`<s>${won(P[i].price)}</s> → `:'';
+  const adminIn=S.pkg===2||S.pkg===3;
+  const optAmt=x=>{const s=S.o[x.id];if(x.custom)return s.amt;return x.unit*(x.qty?Math.max(1,s.qty):1)};
+  const isOn=x=>S.o[x.id].on&&!(x.id==='admin'&&adminIn);
+  const pk=S.pkg<0?0:price(S.pkg),op=O.reduce((a,x)=>a+(isOn(x)?optAmt(x):0),0),sup=pk+op,vat=Math.round(sup*0.1),tot=sup+vat;
+  const cls=i=>S.pkg<0?'':(S.pkg===i?'on':'off');
+  const box=(on,l)=>`<span class="ck${on?' on':''}"><span class="box"></span>${esc(l)}</span>`;
+  const f=S.f,p=S.pkg<0?null:P[S.pkg],d=S.o.domain,dash='-';
+  const rows=[['페이지 수','pages'],['기획·메뉴 구성','plan'],['디자인','design'],['PC·모바일 화면 대응','pc'],['문의 기능','ask'],['지도·오시는 길','map'],['검색 노출 기본 설정','seo'],['고객 직접 수정 기능(관리자 화면)','admin'],['무료 수정','rev'],['무상 하자보수','warr'],['제작 기간','per']];
+  const per=p?(ov(S.pkg,'per')!=null?ov(S.pkg,'per'):p.perC):dash;
+  const warr=p?(ov(S.pkg,'warr')!=null?ov(S.pkg,'warr')+' 동안':p.warrC):dash;
+  const cond=[
+   ['대금 지급','계약금 50%(계약 시) / 잔금 50%(검수 완료 후 오픈 전). 세금계산서 발행'],
+   ['제작 기간',per],
+   ['무료 수정',p?val(S.pkg,'rev')+'. 초과분과 시안 확정 후 디자인 전면 변경은 유상':dash],
+   ['하자보수',p?warr+' 화면 깨짐·링크 오류 등 무상 수정':dash],
+   ['도메인',d.on?`고객 명의로 등록. 최초 ${d.years}년 등록비(${won(d.amt)})는 견적 금액에 포함, 이후 연장 비용은 고객 부담`:'고객 명의로 등록. 등록·연장 비용은 고객 부담'],
+   ['호스팅','디엔에이랩스 계정의 호스팅에서 운영. 다른 호스팅으로 옮길 경우 비용은 고객 부담 (별도 협의)'],
+   ['결과물 권리','잔금 완납 시 사이트 권리 이전, 요청 시 소스 파일 전달 및 관리자 페이지 제공'],
+   ['운영 기간',p?p.run:dash]];
+  $('wrap').innerHTML=`<div class="paper" id="paper">
+  <h1>디엔에이랩스 웹사이트 제작 견적서</h1>
+  <p class="lead">아래와 같이 웹사이트 제작 용역을 견적합니다. 본 견적은 발행일로부터 30일간 유효합니다.</p>
+  <h2>1. 기본 정보</h2>
+  <table class="kv">
+   <tr><th>견적번호</th><td>${esc(f.no)}</td></tr><tr><th>견적일</th><td>${esc(f.date)}</td></tr><tr><th>유효기간</th><td>견적일로부터 30일</td></tr>
+   <tr><th>수신(의뢰자)</th><td>${esc(f.to)} 대표님 귀하</td></tr><tr><th>고객 사업자등록번호</th><td>${esc(f.biz)}</td></tr><tr><th>고객 주소</th><td>${esc(f.addr)}</td></tr>
+   <tr><th>건명</th><td>${esc(f.name)} 웹사이트 제작</td></tr><tr><th>도메인(사이트 주소)</th><td>${f.domain?'www.'+esc(f.domain):''}</td></tr>
+  </table><br>
+  <table class="kv"><tr><th>공급자</th><th>내용</th></tr><tr><td>상호</td><td>디엔에이랩스</td></tr><tr><td>대표자</td><td>최환준</td></tr><tr><td>사업자등록번호</td><td>119-37-01707</td></tr><tr><td>주소</td><td>경기도 파주시 문발로 140</td></tr><tr><td>연락처</td><td>010-4642-3477</td></tr><tr><td>입금 계좌</td><td>NH농협은행 312-4642-3477-81 (예금주: 최환준)</td></tr></table>
+  <h2>2. 패키지 비교</h2>
+  <div class="scroll"><table class="pk"><colgroup><col style="width:16%"><col style="width:21%"><col style="width:21%"><col style="width:21%"><col style="width:21%"></colgroup>
+   <tr><th>항목</th>${P.map((x,i)=>`<th class="${cls(i)}">${box(S.pkg===i,x.n)}</th>`).join('')}</tr>
+   <tr><td>제작 금액 (부가세 별도)</td>${P.map((x,i)=>`<td class="${cls(i)} num">${S.pkg===i&&strike(i)?strike(i)+'<br>':strike(i)}${won(price(i))}${x.from?'~':''}</td>`).join('')}</tr>
+   ${rows.map(([l,k])=>`<tr><td>${l}</td>${P.map((x,i)=>`<td class="${cls(i)}">${esc(val(i,k))}</td>`).join('')}</tr>`).join('')}
+  </table></div>
+  <h2>3. 선택 옵션 및 추가 비용</h2>
+  <div class="scroll"><table class="opt"><colgroup><col style="width:29%"><col style="width:17%"><col style="width:10%"><col style="width:15%"><col style="width:29%"></colgroup>
+   <tr><th>항목</th><th>단가 (부가세 별도)</th><th>수량</th><th>금액</th><th>비고</th></tr>
+   ${O.map(x=>{const s=S.o[x.id],lock=x.id==='admin'&&adminIn,on=isOn(x);
+     const unit=x.custom?(x.years?'실비':'별도 견적'):`${won(x.unit)}${x.u?' / '+x.u:''}`;
+     const qty=x.qty?s.qty:x.years?s.years+'년':'-';
+     const amt=x.custom?(s.amt?won(s.amt):'-'):won(optAmt(x));
+     const note=x.id==='domain'?`${esc(f.domain||'도메인')} / ${s.years}년 등록 실비, 고객 명의로 등록 (견적 금액에 포함)`:lock?'선택한 패키지에 기본 제공':esc(x.note);
+     return `<tr class="${on?'on':'off'}"><td>${box(on,x.n)}</td><td class="num">${unit}</td><td class="num">${qty}</td><td class="num">${amt}</td><td>${note}</td></tr>`}).join('')}
+  </table></div>
+  <h2>4. 견적 금액</h2>
+  <table class="amt"><tr><th>구분</th><th class="num">금액</th></tr>
+   <tr><td>패키지 금액${p?' ('+esc(p.n)+(price(S.pkg)<p.price?', 할인 적용':'')+')':''}</td><td class="num">${won(pk)}</td></tr>
+   <tr><td>선택 옵션 합계</td><td class="num">${won(op)}</td></tr><tr><td>공급가액</td><td class="num">${won(sup)}</td></tr>
+   <tr><td>부가가치세 (10%)</td><td class="num">${won(vat)}</td></tr><tr class="total"><td>합계 (부가세 포함)</td><td class="num">${won(tot)}</td></tr></table>
+  ${S.pkg===3?'<p class="note">프리미엄형은 작업 범위에 따라 금액이 달라질 수 있습니다.</p>':''}
+  <h2>5. 진행 조건</h2>
+  <table class="kv"><tr><th>항목</th><th>조건</th></tr>${cond.map(r=>`<tr><td>${r[0]}</td><td>${esc(r[1])}</td></tr>`).join('')}</table>
+  <h2>6. 안내 사항</h2>
+  <ul><li><b>계약 전에 제공한 시안(목업)의 저작권은 디엔에이랩스에 있습니다. 계약을 체결하지 않은 경우 시안의 전부 또는 일부를 사용하거나, 다른 업체에 전달해 비슷하게 제작하는 것은 허용되지 않습니다.</b></li>
+   <li>제작 과정에 AI 도구를 활용할 수 있으며, 최종 결과물의 품질 책임은 디엔에이랩스에 있습니다.</li><li>사진, 문구, 로고 등 제작 자료는 고객이 제공하는 것을 기준으로 한 견적입니다.</li>
+   <li>유료 글꼴, 유료 이미지, 외부 유료 서비스 이용료는 견적에 포함되지 않으며 필요한 경우 실비로 청구합니다.</li><li>세부 조건은 별도로 체결하는 웹사이트 제작 용역 계약서를 따릅니다.</li></ul>
+  <div class="sign"><p>위와 같이 견적합니다.</p><p>${esc(f.date)}</p>
+   <img alt="디엔에이랩스 대표 최환준 (인) 서명" src="sign.png"><img alt="DNA LABS 로고" src="logo.png" style="margin-top:14px"></div>
+  <div class="approved" id="approvedBox"></div>
+  </div>`;
+  return {client:f.name||D.c||'',no:f.no||'',pkg:p?p.n:'-',total:won(tot),to:f.to||''};
+}
+
+let info=null,key='';
+const fileBase=()=>`견적서_${(info.client||'고객').replace(/[\\/:*?"<>|]/g,'')}`;
+async function saveBlob(blob,name){
+  const file=new File([blob],name,{type:blob.type});
+  if(navigator.canShare&&/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:name});return}catch(e){if(e.name==='AbortError')return}}
+  const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);
+}
+function inApp(){return /KAKAOTALK|NAVER|Instagram|FBAN|FBAV|Line\//i.test(navigator.userAgent)}
+async function busy(btn,label,fn){const t=btn.textContent;btn.disabled=true;btn.textContent=label;try{await fn()}catch(e){banner('저장하지 못했습니다. '+(inApp()?'오른쪽 위 메뉴에서 "다른 브라우저로 열기"를 누른 뒤 다시 시도해 주세요.':'다시 시도해 주세요.'),'err')}document.body.classList.remove('exporting');btn.disabled=false;btn.textContent=t}
+$('bPdf').addEventListener('click',e=>busy(e.currentTarget,'만드는 중…',async()=>{
+  document.body.classList.add('exporting');
+  const blob=await html2pdf().set({margin:[12,12,12,12],image:{type:'jpeg',quality:0.96},html2canvas:{scale:2,backgroundColor:'#fff'},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['tr','li','.sign img','h2']}}).from($('paper')).outputPdf('blob');
+  await saveBlob(blob,fileBase()+'.pdf');
+}));
+$('bImg').addEventListener('click',e=>busy(e.currentTarget,'만드는 중…',async()=>{
+  document.body.classList.add('exporting');
+  const cv=await html2canvas($('paper'),{scale:2,backgroundColor:'#fff',windowWidth:900});
+  const blob=await new Promise(r=>cv.toBlob(r,'image/png'));
+  await saveBlob(blob,fileBase()+'.png');
+}));
+
+function markApproved(at,name){
+  const t=at?new Date(at):new Date();
+  const s=`${t.getFullYear()}년 ${t.getMonth()+1}월 ${t.getDate()}일 ${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+  const box=$('approvedBox');box.textContent=`이 견적은 ${s}에 ${name?name+' 님이 ':''}승인했습니다.`;box.classList.add('show');
+  $('bOk').disabled=true;$('bOk').textContent='승인 완료';
+  banner('승인이 접수되었습니다. 디엔에이랩스에서 곧 연락드리겠습니다.','ok');
+}
+$('bOk').addEventListener('click',()=>{
+  $('dlgSum').textContent=`${info.client} · ${info.pkg} · 합계 ${info.total} (부가세 포함)`;
+  $('aName').value=$('aName').value||info.to;$('aMsg').textContent='';$('dim').classList.add('show');setTimeout(()=>$('aName').focus(),50);
+});
+$('aNo').addEventListener('click',()=>$('dim').classList.remove('show'));
+$('dim').addEventListener('click',e=>{if(e.target.id==='dim')$('dim').classList.remove('show')});
+$('form').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const name=$('aName').value.trim();
+  if(!name){$('aMsg').textContent='성함을 적어 주세요.';return}
+  if(!$('aAgree').checked){$('aMsg').textContent='동의 칸에 체크해 주세요.';return}
+  if(!APPROVE_URL){$('aMsg').textContent='승인 기능을 준비하고 있습니다. 010-4642-3477로 연락 부탁드립니다.';return}
+  $('aGo').disabled=true;$('aGo').textContent='보내는 중…';
+  try{
+    const r=await fetch(APPROVE_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'approve',key,no:info.no,client:info.client,pkg:info.pkg,total:info.total,name,phone:$('aTel').value.trim(),memo:$('aMemo').value.trim(),url:location.href})});
+    const j=await r.json();
+    if(!j.ok)throw new Error(j.error||'fail');
+    try{localStorage.setItem('ok-'+key,JSON.stringify({at:j.at,name}))}catch(_){}
+    $('dim').classList.remove('show');markApproved(j.at,name);
+  }catch(err){$('aMsg').textContent='보내지 못했습니다. 잠시 후 다시 시도하시거나 010-4642-3477로 연락 부탁드립니다.'}
+  $('aGo').disabled=false;$('aGo').textContent='승인하기';
+});
+
+(async()=>{
+  const h=location.hash.replace(/^#d=/,'');
+  if(!h){$('wrap').innerHTML='<p class="empty">견적서 링크가 올바르지 않습니다. 받으신 링크 전체를 다시 열어 주세요.</p>';['bPdf','bImg','bOk'].forEach(i=>$(i).disabled=true);return}
+  try{
+    const D=await decode(h);info=render(D);key=await sha(h);
+    document.title=`${info.client} 웹사이트 제작 견적서 | ONEMILL`;
+    let saved=null;try{saved=JSON.parse(localStorage.getItem('ok-'+key)||'null')}catch(_){}
+    if(saved)markApproved(saved.at,saved.name);
+    else if(APPROVE_URL){fetch(APPROVE_URL+'?action=status&key='+key).then(r=>r.json()).then(j=>{if(j&&j.approved)markApproved(j.at,j.name)}).catch(()=>{})}
+    if(inApp())banner('저장이 잘 안 되면 오른쪽 위 메뉴에서 "다른 브라우저로 열기"를 눌러 주세요.','info');
+  }catch(err){$('wrap').innerHTML='<p class="empty">견적서를 열지 못했습니다. 받으신 링크가 잘리지 않았는지 확인해 주세요.</p>';['bPdf','bImg','bOk'].forEach(i=>$(i).disabled=true)}
+})();
+}
+</script>
+</body>
+</html>
