@@ -259,7 +259,7 @@ function sign_(d) {
     const consentText = '포트폴리오 공개: ' + (consents.portfolio || '표시 안 함') + ' / 제작사 표기: ' + (consents.credit || '표시 안 함');
     try {
       MailApp.sendEmail(email, '[디엔에이랩스] 서명 완료된 웹사이트 제작 용역 계약서',
-        name + '님, 계약서 서명이 완료되었습니다.\n서명된 계약서를 첨부해 드립니다. 보관해 주세요.\n\n디엔에이랩스 최환준 드림\n010-4642-3477 / hello@dnalabs.kr',
+        name + '님, 계약서 서명이 완료되었습니다.\n서명된 계약서를 첨부해 드립니다. 보관해 주세요.\n\n디엔에이랩스 최환준 드림\n010-6451-5807 / hello@dnalabs.kr',
         { name: '디엔에이랩스', attachments: [pdf], replyTo: OWNER_EMAIL });
       MailApp.sendEmail(OWNER_EMAIL, '[ONEMILL] ' + clean_(d.client) + ' 계약서 서명 완료',
         '업체: ' + clean_(d.client) + '\n서명자: ' + name + '\n이메일: ' + email + '\n서명 시각: ' + when + '\n' + consentText + '\n\n드라이브 보관: ' + file.getUrl(),

@@ -137,7 +137,7 @@ let signed=false;
 function markSigned(at,name){
   signed=true;const t=new Date(at);
   const s=`${t.getFullYear()}년 ${t.getMonth()+1}월 ${t.getDate()}일 ${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
-  $('form').innerHTML=`<div class="done-box">이 계약서는 ${s}에 ${name?name.replace(/[<>&]/g,'')+' 님이 ':''}서명을 마쳤습니다.</div><p class="note">서명된 계약서 PDF는 인증한 이메일로 보내 드렸습니다. 궁금한 점은 010-4642-3477 / hello@dnalabs.kr 로 연락 주세요.</p>`;
+  $('form').innerHTML=`<div class="done-box">이 계약서는 ${s}에 ${name?name.replace(/[<>&]/g,'')+' 님이 ':''}서명을 마쳤습니다.</div><p class="note">서명된 계약서 PDF는 인증한 이메일로 보내 드렸습니다. 궁금한 점은 010-6451-5807 / hello@dnalabs.kr 로 연락 주세요.</p>`;
   $('bGo').hidden=true;
 }
 
