@@ -294,3 +294,12 @@ function doPost(e) {
     return out_({ ok: false, error: String(err) });
   }
 }
+
+// 처음 한 번 편집기에서 실행해 드라이브·메일 권한을 허용하는 함수
+function setupAuth() {
+  docsSheet_();
+  const f = folder_();
+  MailApp.getRemainingDailyQuota();
+  CacheService.getScriptCache().put('auth', '1', 60);
+  Logger.log('준비 완료: ' + f.getUrl());
+}
