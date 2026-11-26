@@ -103,6 +103,7 @@ function view_(p) {
   try {
     d = findDoc_(id);
     const now = ts_();
+    if (!d && p.count === '0') return { ok: true, registered: false, doneAt: '', doneBy: '', hash: '' };
     if (!d) {
       const sh = docsSheet_();
       sh.appendRow([id, clean_(p.type, 10), clean_(p.client), '', now, now, 1, '', '', '', '', '', '']);
