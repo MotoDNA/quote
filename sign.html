@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>웹사이트 제작 용역 계약서 서명 | 디엔에이랩스</title>
+<meta property="og:title" content="디엔에이랩스 웹사이트 제작 용역 계약서">
+<meta property="og:description" content="계약서를 확인하고 이메일 인증 후 서명해 주세요.">
+<style>
+  :root{--ink:#16181d;--sub:#5b6270;--line:#d9d9de;--head:#f2f2f4;--bg:#eceef1;--accent:#1f3a8a;--ok:#12805c}
+  *{box-sizing:border-box;min-width:0}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
+  .bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #dde0e5;padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .brand{font-size:12px;letter-spacing:.16em;font-weight:700;color:var(--sub);margin-right:auto}
+  .btn{font:inherit;font-size:14px;min-height:44px;padding:0 16px;border-radius:9px;border:1px solid #cfd4dc;background:#fff;color:var(--ink);cursor:pointer}
+  .btn.pri{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+  .btn[disabled]{opacity:.55;cursor:default}
+  .btn:focus-visible,input:focus-visible{outline:3px solid rgba(31,79,216,.3);outline-offset:1px}
+  .banner{display:none;max-width:794px;margin:14px auto 0;padding:12px 14px;border-radius:10px;font-size:14px}
+  .banner.show{display:block}.banner.ok{background:#e7f6ef;color:var(--ok)}.banner.err{background:#fdecea;color:#c0392b}.banner.info{background:#eef3ff;color:#1f3fa8}
+  .wrap{padding:16px 10px 40px}
+  .paper{background:#fff;max-width:794px;margin:0 auto;padding:44px 50px;box-shadow:0 2px 18px #0002}
+  .paper h1{font-size:26px;line-height:1.2;margin:0 0 6px}
+  .paper h2{font-size:17px;margin:26px 0 8px}.paper h3{font-size:15px;margin:20px 0 4px}.paper p{margin:6px 0}
+  .lead{margin:0 0 22px;color:#333}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:var(--head);font-weight:500}
+  ol,ul{padding-left:22px;margin:6px 0}li{margin:3px 0}
+  .note{font-size:12.5px;color:var(--sub)}
+  .ctable td:first-child{width:130px}
+  .cs{display:inline-flex;align-items:center;gap:4px;margin-right:6px}
+  .cs input{width:18px;height:18px;margin:0}
+  .gsig{display:inline-block;min-width:120px;height:44px;border:1.5px dashed #9aa6d6;border-radius:6px;vertical-align:middle;color:#9aa6d6;font-size:12px;text-align:center;line-height:42px}
+  .gsig img,.osig img{height:46px;vertical-align:middle}
+  .gsig.done{border:0}
+  .cdate{color:#9aa0ad;font-size:13px}
+  .card{max-width:794px;margin:16px auto 0;background:#fff;border-radius:14px;padding:18px;box-shadow:0 2px 12px #0001}
+  .card h2{font-size:18px;margin:0 0 4px}
+  .card label.l{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}
+  .card input[type=text],.card input[type=tel],.card input[type=email]{width:100%;border:1px solid #cfd4dc;border-radius:10px;padding:11px 12px;font:inherit;font-size:16px}
+  .row{display:flex;gap:8px;align-items:stretch}.row>input{flex:1}
+  .pad{position:relative;border:1.5px solid #cfd4dc;border-radius:10px;background:#fbfcff;height:180px;touch-action:none}
+  .pad canvas{position:absolute;inset:0;width:100%;height:100%}
+  .pad span{position:absolute;inset:0;display:grid;place-items:center;color:#b0b6c3;pointer-events:none;font-size:14px}
+  .agree{display:flex;gap:8px;align-items:flex-start;margin-top:16px;font-size:14px}
+  .agree input{width:20px;height:20px;margin-top:2px;flex:none}
+  .msg{font-size:13.5px;margin-top:10px;min-height:1.2em}.msg.err{color:#c0392b}.msg.ok{color:var(--ok)}
+  .done-box{border:2px solid var(--ok);color:var(--ok);border-radius:10px;padding:12px 14px;font-weight:700}
+  .empty{max-width:520px;margin:60px auto;text-align:center;color:var(--sub)}
+  .exporting .paper{box-shadow:none;padding:0 4px}
+  @media(max-width:640px){.paper{padding:22px 14px}table{font-size:12px}th,td{padding:5px 6px}.paper h1{font-size:21px}.ctable td:first-child{width:88px}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <span class="brand">ONEMILL · 디엔에이랩스</span>
+  <button class="btn" id="bPdf" type="button">PDF로 저장</button>
+  <button class="btn pri" id="bGo" type="button">서명하러 가기</button>
+</div>
+<div class="banner" id="banner"></div>
+<div class="wrap">
+  <div id="doc"></div>
+  <form class="card" id="form" autocomplete="on">
+    <h2>계약서 서명</h2>
+    <p class="note">위 계약서 내용을 확인한 뒤 서명해 주세요. 제15조 동의 여부는 계약서 안에서 고르실 수 있습니다.</p>
+    <label class="l" for="fName">서명하시는 분 성함</label>
+    <input type="text" id="fName" autocomplete="name" required>
+    <label class="l" for="fTel">연락처 <span class="note">(선택)</span></label>
+    <input type="tel" id="fTel" autocomplete="tel">
+    <label class="l" for="fEmail">이메일 (본인 확인용)</label>
+    <div class="row"><input type="email" id="fEmail" autocomplete="email" required><button class="btn" type="button" id="bCode">인증번호 받기</button></div>
+    <label class="l" for="fCode">인증번호 6자리</label>
+    <input type="text" id="fCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="메일로 받은 숫자">
+    <label class="l">서명 <button class="btn" type="button" id="bClear" style="min-height:32px;padding:0 10px;font-size:13px;margin-left:6px">다시 그리기</button></label>
+    <div class="pad" id="pad"><canvas id="cv"></canvas><span id="padHint">여기에 손가락이나 마우스로 서명해 주세요</span></div>
+    <label class="agree"><input type="checkbox" id="fAgree"> 위 계약서의 내용을 모두 읽고 이해했으며, 이 계약에 동의하여 서명합니다.</label>
+    <div style="margin-top:16px"><button class="btn pri" type="submit" id="bSign" style="width:100%">서명 완료</button></div>
+    <p class="msg" id="msg"></p>
+  </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.9/purify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+{
+const API='https://script.google.com/macros/s/AKfycbyGuBjgVPo-ve4b3tLI9GBOWc_hVFcFMxh3_zR-JO2uXkG3W316Eyl2WUbKA77HWDzN/exec';
+const $=id=>document.getElementById(id);
+const banner=(t,k)=>{const b=$('banner');b.textContent=t;b.className='banner show '+k};
+const msg=(t,k)=>{const m=$('msg');m.textContent=t;m.className='msg '+(k||'')};
+let D=null,raw='';
+
+async function decode(h){
+  const kind=h[0],body=h.slice(1).replace(/-/g,'+').replace(/_/g,'/');
+  const bin=Uint8Array.from(atob(body+'==='.slice((body.length+3)%4)),c=>c.charCodeAt(0));
+  if(kind==='z'){const st=new Blob([bin]).stream().pipeThrough(new DecompressionStream('deflate-raw'));return await new Response(st).text()}
+  return new TextDecoder().decode(bin);
+}
+
+function render(){
+  const clean=window.DOMPurify?DOMPurify.sanitize(D.h,{ADD_ATTR:['data-k','data-v'],FORBID_TAGS:['style','form','input','script','iframe']}):'';
+  $('doc').innerHTML='<div class="paper" id="paper">'+clean+'</div>';
+  // 제15조 동의 칸 → 고를 수 있는 단추
+  document.querySelectorAll('#paper .cs').forEach(sp=>{
+    const k=sp.dataset.k,v=sp.dataset.v;if(!/^\w+$/.test(k||''))return;
+    const lab=document.createElement('label');lab.className='cs';
+    const r=document.createElement('input');r.type='radio';r.name='cs-'+k;r.value=v;
+    lab.appendChild(r);sp.replaceWith(lab);
+  });
+  document.querySelectorAll('#paper .cdate').forEach(x=>x.textContent='(서명할 때 자동으로 들어갑니다)');
+  document.querySelectorAll('#paper .gsig').forEach(x=>x.textContent='서명란');
+  document.querySelectorAll('#paper .osig').forEach(x=>{const im=document.createElement('img');im.src='owner-sign.png';im.alt='디엔에이랩스 대표 서명';x.appendChild(im)});
+}
+const consents=()=>{const o={};['portfolio','credit'].forEach(k=>{const r=document.querySelector(`input[name="cs-${k}"]:checked`);if(r)o[k]=r.value});return o};
+
+// 서명 그리기
+const cv=$('cv'),ctx=cv.getContext('2d');let drawing=false,dirty=false,last=null;
+function fit(){const r=cv.getBoundingClientRect();const keep=dirty?cv.toDataURL():null;cv.width=Math.round(r.width*2);cv.height=Math.round(r.height*2);ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#111';if(keep){const im=new Image();im.onload=()=>ctx.drawImage(im,0,0,cv.width,cv.height);im.src=keep}}
+const pt=e=>{const r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*2,y:(e.clientY-r.top)*2}};
+cv.addEventListener('pointerdown',e=>{if(signed)return;drawing=true;last=pt(e);cv.setPointerCapture(e.pointerId);ctx.beginPath();ctx.arc(last.x,last.y,2.4,0,7);ctx.fillStyle='#111';ctx.fill();dirty=true;$('padHint').hidden=true});
+cv.addEventListener('pointermove',e=>{if(!drawing)return;const p=pt(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p});
+['pointerup','pointercancel','pointerleave'].forEach(t=>cv.addEventListener(t,()=>{drawing=false;if(dirty)preview()}));
+$('bClear').addEventListener('click',()=>{ctx.clearRect(0,0,cv.width,cv.height);dirty=false;$('padHint').hidden=false;document.querySelectorAll('#paper .gsig').forEach(x=>{x.classList.remove('done');x.textContent='서명란'})});
+function sigData(){
+  // 그린 부분만 잘라 작게 만들기
+  const w=cv.width,h=cv.height,d=ctx.getImageData(0,0,w,h).data;let x0=w,y0=h,x1=0,y1=0;
+  for(let y=0;y<h;y+=2)for(let x=0;x<w;x+=2){if(d[(y*w+x)*4+3]>10){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}}
+  if(x1<=x0)return '';
+  x0=Math.max(0,x0-8);y0=Math.max(0,y0-8);x1=Math.min(w,x1+8);y1=Math.min(h,y1+8);
+  const sc=Math.min(1,120/(y1-y0));const o=document.createElement('canvas');o.width=Math.round((x1-x0)*sc);o.height=Math.round((y1-y0)*sc);
+  o.getContext('2d').drawImage(cv,x0,y0,x1-x0,y1-y0,0,0,o.width,o.height);return o.toDataURL('image/png');
+}
+function preview(){const s=sigData();if(!s)return;document.querySelectorAll('#paper .gsig').forEach(x=>{x.classList.add('done');x.innerHTML='';const im=document.createElement('img');im.src=s;im.alt='서명';x.appendChild(im)})}
+
+let signed=false;
+function markSigned(at,name){
+  signed=true;const t=new Date(at);
+  const s=`${t.getFullYear()}년 ${t.getMonth()+1}월 ${t.getDate()}일 ${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+  $('form').innerHTML=`<div class="done-box">이 계약서는 ${s}에 ${name?name.replace(/[<>&]/g,'')+' 님이 ':''}서명을 마쳤습니다.</div><p class="note">서명된 계약서 PDF는 인증한 이메일로 보내 드렸습니다. 궁금한 점은 010-4642-3477 / hello@dnalabs.kr 로 연락 주세요.</p>`;
+  $('bGo').hidden=true;
+}
+
+let codeWait=0;
+$('bCode').addEventListener('click',async()=>{
+  const email=$('fEmail').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg('이메일 주소를 확인해 주세요.','err');return}
+  if(Date.now()<codeWait){msg('잠시 후 다시 눌러 주세요.','err');return}
+  $('bCode').disabled=true;msg('인증번호를 보내는 중입니다…');
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'code',id:D.i,email})});
+    const j=await r.json();
+    if(j.ok){msg('인증번호를 보냈습니다. 메일함(없으면 스팸함)을 확인해 주세요. 10분 동안 쓸 수 있습니다.','ok');codeWait=Date.now()+50000;$('fCode').focus()}
+    else msg(j.error==='wait'?'방금 보냈습니다. 1분 뒤 다시 눌러 주세요.':j.error==='signed'?'이미 서명이 끝난 계약서입니다.':j.error==='unregistered'?'등록되지 않은 계약서 링크입니다. 디엔에이랩스에 문의해 주세요.':'인증번호를 보내지 못했습니다. 다시 시도해 주세요.','err');
+  }catch(e){msg('인증번호를 보내지 못했습니다. 인터넷 연결을 확인해 주세요.','err')}
+  $('bCode').disabled=false;
+});
+$('form').addEventListener('submit',async e=>{
+  e.preventDefault();if(signed)return;
+  const name=$('fName').value.trim(),email=$('fEmail').value.trim(),code=$('fCode').value.trim();
+  if(!name){msg('성함을 적어 주세요.','err');$('fName').focus();return}
+  if(!/^\d{6}$/.test(code)){msg('메일로 받은 인증번호 6자리를 넣어 주세요.','err');$('fCode').focus();return}
+  const sig=sigData();if(!sig){msg('서명란에 서명을 그려 주세요.','err');return}
+  if(!$('fAgree').checked){msg('동의 칸에 체크해 주세요.','err');return}
+  $('bSign').disabled=true;$('bSign').textContent='서명 처리 중…';msg('서명된 계약서를 만들고 있습니다. 10~20초 정도 걸릴 수 있습니다.');
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'sign',id:D.i,client:D.c,email,code,name,phone:$('fTel').value.trim(),consents:consents(),sig,html:D.h})});
+    const j=await r.json();
+    if(j.ok){markSigned(j.at,name);banner('서명이 완료되었습니다. 서명된 계약서를 메일로 보내 드렸습니다.','ok');window.scrollTo({top:0,behavior:'smooth'});return}
+    msg(j.error==='code'?'인증번호가 맞지 않거나 시간이 지났습니다. 다시 받아 주세요.':j.error==='changed'?'이 링크의 계약서 내용이 처음 보낸 것과 달라 서명할 수 없습니다. 디엔에이랩스에 새 링크를 요청해 주세요.':j.error==='unregistered'?'등록되지 않은 계약서 링크입니다. 디엔에이랩스에 문의해 주세요.':'서명을 처리하지 못했습니다. 다시 시도해 주세요.','err');
+  }catch(err){msg('서명을 보내지 못했습니다. 인터넷 연결을 확인하고 다시 눌러 주세요.','err')}
+  $('bSign').disabled=false;$('bSign').textContent='서명 완료';
+});
+$('bGo').addEventListener('click',()=>{$('form').scrollIntoView({behavior:'smooth'});setTimeout(()=>$('fName').focus(),500)});
+$('bPdf').addEventListener('click',async e=>{
+  const b=e.currentTarget;b.disabled=true;const t=b.textContent;b.textContent='만드는 중…';
+  try{document.body.classList.add('exporting');
+    const blob=await html2pdf().set({margin:[12,12,12,12],image:{type:'jpeg',quality:0.96},html2canvas:{scale:2,backgroundColor:'#fff'},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['tr','li','h2','h3']}}).from($('paper')).outputPdf('blob');
+    const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=`계약서_${(D.c||'').replace(/[\\/:*?"<>|]/g,'')}.pdf`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);
+  }catch(err){banner('저장하지 못했습니다. 다른 브라우저로 열어 다시 시도해 주세요.','err')}
+  document.body.classList.remove('exporting');b.disabled=false;b.textContent=t;
+});
+
+(async()=>{
+  const h=location.hash.replace(/^#d=/,'');
+  const fail=t=>{$('doc').innerHTML='<p class="empty">'+t+'</p>';$('form').hidden=true;$('bPdf').disabled=true;$('bGo').hidden=true};
+  if(!h){fail('계약서 링크가 올바르지 않습니다. 받으신 링크 전체를 다시 열어 주세요.');return}
+  try{raw=await decode(h);D=JSON.parse(raw)}catch(e){fail('계약서를 열지 못했습니다. 받으신 링크가 잘리지 않았는지 확인해 주세요.');return}
+  if(!D||!D.i||!D.h){fail('계약서 링크가 올바르지 않습니다.');return}
+  document.title=`${D.c||''} 웹사이트 제작 용역 계약서 | 디엔에이랩스`;
+  render();fit();window.addEventListener('resize',fit);
+  if(D.e)$('fEmail').value=D.e;if(D.n)$('fName').value=D.n;
+  let seen=/[?&]p=1/.test(location.search);try{seen=seen||sessionStorage.getItem('v-'+D.i)}catch(_){}
+  try{
+    const r=await fetch(API+'?action=view&type=%EA%B3%84%EC%95%BD%EC%84%9C&id='+encodeURIComponent(D.i)+'&client='+encodeURIComponent(D.c||'')+(seen?'&count=0':''));
+    const j=await r.json();try{sessionStorage.setItem('v-'+D.i,'1')}catch(_){}
+    if(j.doneAt)markSigned(j.doneAt,j.doneBy);
+    else if(!j.registered)banner('이 링크는 아직 서명용으로 등록되지 않았습니다. 디엔에이랩스에서 보낸 최신 링크인지 확인해 주세요.','err');
+  }catch(e){}
+  if(/KAKAOTALK|NAVER|Instagram|FBAN|FBAV|Line\//i.test(navigator.userAgent)&&!signed)banner('서명 그리기나 저장이 잘 안 되면 오른쪽 위 메뉴에서 "다른 브라우저로 열기"를 눌러 주세요.','info');
+})();
+}
+</script>
+</body>
+</html>
