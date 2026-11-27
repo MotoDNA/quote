@@ -35,6 +35,10 @@
   .gsig{display:inline-block;min-width:120px;height:44px;border:1.5px dashed #6f7fd0;border-radius:6px;vertical-align:middle;color:#3b4db3;background:#f3f5ff;font-size:13px;font-weight:600;text-align:center;line-height:42px;cursor:pointer}
   .gsig.done{background:none;cursor:pointer}
   .pad span[hidden]{display:none}
+  .inlinesig{margin-top:8px}
+  .inlinesig .pad{height:120px;min-width:0;border:2px dashed #6f7fd0;background:#f6f8ff}
+  .inlinesig .pad span{font-size:13px;color:#5664b8;font-weight:600;text-align:center;padding:0 6px}
+  .inlinesig #bClear{margin:6px 0 0!important}
   .sheet{position:fixed;inset:0;z-index:30;background:rgba(15,18,30,.55);display:flex;align-items:flex-end;justify-content:center}
   .sheet[hidden]{display:none}
   .sheetbox{background:#fff;width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
@@ -73,7 +77,7 @@
   <div id="doc"></div>
   <form class="card" id="form" autocomplete="on">
     <h2>계약서 서명</h2>
-    <p class="note">위 계약서 내용을 확인한 뒤 서명해 주세요. 제15조 동의 여부는 계약서 안에서 고르실 수 있습니다.</p>
+    <p class="note">계약서의 <b>갑 대표자 칸에 서명</b>하신 뒤, 아래 정보를 넣고 [서명 완료]를 눌러 주세요. 제15조 동의 여부는 계약서 안에서 고르실 수 있습니다.</p>
     <label class="l" for="fName">서명하시는 분 성함</label>
     <input type="text" id="fName" autocomplete="name" required>
     <label class="l" for="fTel">연락처 <span class="note">(선택)</span></label>
@@ -82,7 +86,7 @@
     <div class="row"><input type="email" id="fEmail" autocomplete="email" required><button class="btn" type="button" id="bCode">인증번호 받기</button></div>
     <label class="l" for="fCode">인증번호 6자리</label>
     <input type="text" id="fCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="메일로 받은 숫자">
-    <label class="l">서명 <button class="btn" type="button" id="bClear" style="min-height:32px;padding:0 10px;font-size:13px;margin-left:6px">다시 그리기</button></label>
+    <label class="l" id="sigLabel">서명 <button class="btn" type="button" id="bClear" style="min-height:32px;padding:0 10px;font-size:13px;margin-left:6px">다시 그리기</button></label>
     <div class="pad" id="pad"><canvas id="cv"></canvas><span id="padHint">여기에 손가락이나 마우스로 서명해 주세요</span></div>
     <label class="agree"><input type="checkbox" id="fAgree"> 위 계약서의 내용을 모두 읽고 이해했으며, 이 계약에 동의하여 서명합니다.</label>
     <div style="margin-top:16px"><button class="btn pri" type="submit" id="bSign" style="width:100%">서명 완료</button></div>
@@ -127,7 +131,11 @@ function render(){
     lab.appendChild(r);sp.replaceWith(lab);
   });
   document.querySelectorAll('#paper .cdate').forEach(x=>x.textContent='(서명할 때 자동으로 들어갑니다)');
-  document.querySelectorAll('#paper .gsig').forEach(x=>{x.textContent='눌러서 서명';x.setAttribute('role','button');x.tabIndex=0});
+  // 갑 대표자 칸 안에서 바로 서명
+  const g=document.querySelector('#paper .gsig');
+  if(g){const w=document.createElement('div');w.className='inlinesig';g.replaceWith(w);
+    const pad=document.getElementById('pad');w.appendChild(pad);$('padHint').textContent='여기에 바로 서명해 주세요';
+    w.appendChild($('bClear'));const lb=$('sigLabel');if(lb)lb.hidden=true}
   document.querySelectorAll('#paper .osig').forEach(x=>{const im=document.createElement('img');im.src='owner-sign.png';im.alt='디엔에이랩스 대표 서명';x.appendChild(im)});
 }
 const consents=()=>{const o={};['portfolio','credit'].forEach(k=>{const r=document.querySelector(`input[name="cs-${k}"]:checked`);if(r)o[k]=r.value});return o};
@@ -178,7 +186,7 @@ $('form').addEventListener('submit',async e=>{
   const name=$('fName').value.trim(),email=$('fEmail').value.trim(),code=$('fCode').value.trim();
   if(!name){msg('성함을 적어 주세요.','err');$('fName').focus();return}
   if(!/^\d{6}$/.test(code)){msg('메일로 받은 인증번호 6자리를 넣어 주세요.','err');$('fCode').focus();return}
-  const sig=sigData();if(!sig){msg('서명란에 서명을 그려 주세요.','err');return}
+  const sig=sigData();if(!sig){msg('계약서 아래 갑 대표자 칸에 서명을 그려 주세요.','err');$('pad').scrollIntoView({behavior:'smooth',block:'center'});return}
   if(!$('fAgree').checked){msg('동의 칸에 체크해 주세요.','err');return}
   $('bSign').disabled=true;$('bSign').textContent='서명 처리 중…';msg('서명된 계약서를 만들고 있습니다. 10~20초 정도 걸릴 수 있습니다.');
   try{
@@ -198,7 +206,7 @@ $('doc').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.tar
 $('sheetOk').addEventListener('click',()=>{if(!dirty){$('sheetMsg').textContent='서명을 그려 주세요.';return}$('sheetMsg').textContent='';closeSheet(true)});
 $('sheetCancel').addEventListener('click',()=>closeSheet(false));
 $('sheetClear').addEventListener('click',()=>$('bClear').click());
-$('bGo').addEventListener('click',()=>{$('form').scrollIntoView({behavior:'smooth'});setTimeout(()=>$('fName').focus(),500)});
+$('bGo').addEventListener('click',()=>{$('pad').scrollIntoView({behavior:'smooth',block:'center'})});
 $('bPdf').addEventListener('click',async e=>{
   const b=e.currentTarget;b.disabled=true;const t=b.textContent;b.textContent='만드는 중…';
   try{document.body.classList.add('exporting');
