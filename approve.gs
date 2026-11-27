@@ -8,9 +8,9 @@
  */
 const OWNER_EMAIL = 'hello@dnalabs.kr';
 const OWNER_SIGN_URL = 'https://quote.dnalabs.kr/owner-sign.png';
-const DOC_HEAD = ['문서ID', '종류', '업체', '발송 시각', '처음 열람', '마지막 열람', '열람 수', '완료 시각', '완료자', '이메일', 'PDF', '문서 지문', '받는 사람'];
+const DOC_HEAD = ['문서ID', '종류', '업체', '발송 시각', '처음 열람', '마지막 열람', '열람 수', '완료 시각', '완료자', '이메일', 'PDF', '문서 지문', '받는 사람', '링크 데이터'];
 // 열 번호(1부터)
-const COL = { id: 1, type: 2, client: 3, sent: 4, first: 5, last: 6, views: 7, done: 8, by: 9, email: 10, pdf: 11, hash: 12, to: 13 };
+const COL = { id: 1, type: 2, client: 3, sent: 4, first: 5, last: 6, views: 7, done: 8, by: 9, email: 10, pdf: 11, hash: 12, to: 13, data: 14 };
 
 function props_() { return PropertiesService.getScriptProperties(); }
 
@@ -125,6 +125,11 @@ function doGet(e) {
   const p = (e && e.parameter) || {};
   if (p.action === 'tgtest') return out_(tgTest_());
   if (p.action === 'view') return out_(view_(p));
+  if (p.action === 'doc') { // 짧은 링크: 문서 내용 돌려주기
+    const d = findDoc_(String(p.id || '').slice(0, 80));
+    const data = d ? String(d.v[COL.data - 1] || '') : '';
+    return out_(data ? { ok: true, d: data } : { ok: false, error: 'notfound' });
+  }
   if (p.action === 'setup') { docsSheet_(); return out_({ ok: true }); }
   if (p.action === 'status' && p.key) {
     const r = find_(String(p.key).slice(0, 64));

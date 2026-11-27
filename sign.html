@@ -182,7 +182,8 @@ $('bPdf').addEventListener('click',async e=>{
 });
 
 (async()=>{
-  const h=location.hash.replace(/^#d=/,'');
+  let h=location.hash.replace(/^#d=/,'');
+  if(!h){const sid=new URLSearchParams(location.search).get('d');if(sid){try{const j=await fetch(API+'?action=doc&id='+encodeURIComponent(sid)).then(r=>r.json());if(j&&j.ok)h=j.d}catch(_){}}}
   const fail=t=>{$('doc').innerHTML='<p class="empty">'+t+'</p>';$('form').hidden=true;$('bPdf').disabled=true;$('bGo').hidden=true};
   if(!h){fail('계약서 링크가 올바르지 않습니다. 받으신 링크 전체를 다시 열어 주세요.');return}
   try{raw=await decode(h);D=JSON.parse(raw)}catch(e){fail('계약서를 열지 못했습니다. 받으신 링크가 잘리지 않았는지 확인해 주세요.');return}
