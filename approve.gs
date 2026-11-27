@@ -80,6 +80,32 @@ function telegram_(text) {
   } catch (err) { return null; }
 }
 
+// 카카오 알림톡(승인 전에는 문자) 보내기: 상담알림과 같은 Make 웹훅 → 솔라피
+// 스크립트 속성 MAKE_WEBHOOK_URL 이 있어야 보냄. ONEMILL_KAKAO=Y 로 두면 알림톡(템플릿 승인 후), 아니면 문자.
+function kakao_(kind, client, body, contact) {
+  const p = props_();
+  const hook = (p.getProperty('MAKE_WEBHOOK_URL') || '').trim();
+  if (!hook) return null;
+  const to = (p.getProperty('ADMIN_PHONE') || '01046423477').replace(/\D/g, '');
+  const from = (p.getProperty('SOLAPI_FROM') || '01046423477').replace(/\D/g, '');
+  const when = Utilities.formatDate(new Date(), 'Asia/Seoul', 'M월 d일 HH:mm');
+  const useKakao = (p.getProperty('ONEMILL_KAKAO') || '').trim().toUpperCase() === 'Y';
+  const text = '[' + kind + '] ' + client + '\n' + body + (contact ? '\n연락처: ' + contact : '') + '\n' + when;
+  try {
+    return UrlFetchApp.fetch(hook, {
+      method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+      payload: JSON.stringify({ type: useKakao ? 'onemill' : 'sms', to: to, from: from, text: text, subject: '[' + kind + '] ' + client,
+        company: client, name: kind, phone: contact || '-', message: body, when: when })
+    });
+  } catch (err) { return null; }
+}
+function notify_(kind, client, body, contact, tgText) {
+  telegram_(tgText || ('[' + kind + '] ' + client + '\n' + body));
+  kakao_(kind, client, body, contact);
+}
+// 카톡·문자 시험: 편집기에서 실행
+function kakaoTest() { Logger.log(kakao_('알림 시험', 'ONEMILL', '견적·계약 알림 연결 시험입니다.', '')); }
+
 // 텔레그램 연결 점검: …/exec?action=tgtest
 function tgTest_() {
   const p = props_();
@@ -116,7 +142,7 @@ function view_(p) {
       d.sh.getRange(d.row, COL.views).setValue(views + 1);
     }
   } finally { lock.releaseLock(); }
-  if (first) telegram_('[' + (p.type === '계약서' ? '계약서' : '견적서') + ' 열람] ' + clean_(p.client || d.v[COL.client - 1]) + '\n고객이 처음으로 열어 봤습니다.');
+  if (first) notify_((p.type === '계약서' ? '계약서' : '견적서') + ' 열람', clean_(p.client || d.v[COL.client - 1]), '고객이 처음으로 열어 봤습니다.', '');
   const v = d.v;
   return { ok: true, registered: !!v[COL.sent - 1], doneAt: iso_(v[COL.done - 1]), doneBy: v[COL.by - 1] || '', hash: v[COL.hash - 1] || '' };
 }
@@ -172,7 +198,8 @@ function approve_(d) {
     MailApp.sendEmail(OWNER_EMAIL, '[ONEMILL] ' + clean_(d.client) + ' 견적 승인',
       lines.join('\n') + '\n\n승인한 견적서 보기:\n' + clean_(d.url, 5000), { name: 'ONEMILL 견적 알림' });
   } catch (err) {}
-  telegram_(lines.join('\n') + '\n(견적서 링크는 메일과 승인 기록 시트에 있습니다)');
+  notify_('견적 승인', clean_(d.client), clean_(d.pkg) + ' / ' + clean_(d.total) + '(부가세 포함)\n승인자: ' + clean_(d.name, 60), clean_(d.phone, 40),
+    lines.join('\n') + '\n(견적서 링크는 메일과 승인 기록 시트에 있습니다)');
   return { ok: true, at: now.toISOString() };
 }
 
@@ -270,7 +297,8 @@ function sign_(d) {
         '업체: ' + clean_(d.client) + '\n서명자: ' + name + '\n이메일: ' + email + '\n서명 시각: ' + when + '\n' + consentText + '\n\n드라이브 보관: ' + file.getUrl(),
         { name: 'ONEMILL 계약 알림', attachments: [pdf] });
     } catch (err) {}
-    telegram_('[계약서 서명 완료] ' + clean_(d.client) + '\n서명자: ' + name + ' (' + email + ')\n' + consentText);
+    notify_('계약서 서명 완료', clean_(d.client), '서명자: ' + name + '\n' + consentText, email,
+      '[계약서 서명 완료] ' + clean_(d.client) + '\n서명자: ' + name + ' (' + email + ')\n' + consentText);
     return { ok: true, at: now.toISOString() };
   } finally {
     lock.releaseLock();
