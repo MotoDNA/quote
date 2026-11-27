@@ -32,7 +32,16 @@
   .ctable td:first-child{width:130px}
   .cs{display:inline-flex;align-items:center;gap:4px;margin-right:6px}
   .cs input{width:18px;height:18px;margin:0}
-  .gsig{display:inline-block;min-width:120px;height:44px;border:1.5px dashed #9aa6d6;border-radius:6px;vertical-align:middle;color:#9aa6d6;font-size:12px;text-align:center;line-height:42px}
+  .gsig{display:inline-block;min-width:120px;height:44px;border:1.5px dashed #6f7fd0;border-radius:6px;vertical-align:middle;color:#3b4db3;background:#f3f5ff;font-size:13px;font-weight:600;text-align:center;line-height:42px;cursor:pointer}
+  .gsig.done{background:none;cursor:pointer}
+  .pad span[hidden]{display:none}
+  .sheet{position:fixed;inset:0;z-index:30;background:rgba(15,18,30,.55);display:flex;align-items:flex-end;justify-content:center}
+  .sheet[hidden]{display:none}
+  .sheetbox{background:#fff;width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+  .sheetbox h3{margin:0 0 4px;font-size:18px}
+  .sheetbox .pad{height:220px}
+  .sheetbtns{display:flex;gap:8px;margin-top:12px}.sheetbtns .btn{flex:1}
+  @media(min-width:640px){.sheet{align-items:center}.sheetbox{border-radius:18px}}
   .gsig img,.osig img{height:46px;vertical-align:middle}
   .gsig.done{border:0}
   .cdate{color:#9aa0ad;font-size:13px}
@@ -81,6 +90,15 @@
   </form>
 </div>
 
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTtl">
+  <div class="sheetbox">
+    <h3 id="sheetTtl">서명해 주세요</h3>
+    <p class="note" style="margin:0 0 10px">손가락이나 마우스로 아래 칸에 서명해 주세요.</p>
+    <div id="sheetSlot"></div>
+    <p class="msg err" id="sheetMsg"></p>
+    <div class="sheetbtns"><button class="btn" type="button" id="sheetClear">다시 그리기</button><button class="btn" type="button" id="sheetCancel">닫기</button><button class="btn pri" type="button" id="sheetOk">서명 넣기</button></div>
+  </div>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.9/purify.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
@@ -109,7 +127,7 @@ function render(){
     lab.appendChild(r);sp.replaceWith(lab);
   });
   document.querySelectorAll('#paper .cdate').forEach(x=>x.textContent='(서명할 때 자동으로 들어갑니다)');
-  document.querySelectorAll('#paper .gsig').forEach(x=>x.textContent='서명란');
+  document.querySelectorAll('#paper .gsig').forEach(x=>{x.textContent='눌러서 서명';x.setAttribute('role','button');x.tabIndex=0});
   document.querySelectorAll('#paper .osig').forEach(x=>{const im=document.createElement('img');im.src='owner-sign.png';im.alt='디엔에이랩스 대표 서명';x.appendChild(im)});
 }
 const consents=()=>{const o={};['portfolio','credit'].forEach(k=>{const r=document.querySelector(`input[name="cs-${k}"]:checked`);if(r)o[k]=r.value});return o};
@@ -121,7 +139,7 @@ const pt=e=>{const r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*2,y
 cv.addEventListener('pointerdown',e=>{if(signed)return;drawing=true;last=pt(e);cv.setPointerCapture(e.pointerId);ctx.beginPath();ctx.arc(last.x,last.y,2.4,0,7);ctx.fillStyle='#111';ctx.fill();dirty=true;$('padHint').hidden=true});
 cv.addEventListener('pointermove',e=>{if(!drawing)return;const p=pt(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p});
 ['pointerup','pointercancel','pointerleave'].forEach(t=>cv.addEventListener(t,()=>{drawing=false;if(dirty)preview()}));
-$('bClear').addEventListener('click',()=>{ctx.clearRect(0,0,cv.width,cv.height);dirty=false;$('padHint').hidden=false;document.querySelectorAll('#paper .gsig').forEach(x=>{x.classList.remove('done');x.textContent='서명란'})});
+$('bClear').addEventListener('click',()=>{ctx.clearRect(0,0,cv.width,cv.height);dirty=false;$('padHint').hidden=false;document.querySelectorAll('#paper .gsig').forEach(x=>{x.classList.remove('done');x.textContent='눌러서 서명'})});
 function sigData(){
   // 그린 부분만 잘라 작게 만들기
   const w=cv.width,h=cv.height,d=ctx.getImageData(0,0,w,h).data;let x0=w,y0=h,x1=0,y1=0;
@@ -171,6 +189,15 @@ $('form').addEventListener('submit',async e=>{
   }catch(err){msg('서명을 보내지 못했습니다. 인터넷 연결을 확인하고 다시 눌러 주세요.','err')}
   $('bSign').disabled=false;$('bSign').textContent='서명 완료';
 });
+// 계약서 안 서명란을 누르면 서명 창 열기
+const padEl=$('pad'),padHome=document.createComment('pad');padEl.before(padHome);
+function openSheet(){if(signed)return;$('sheetSlot').appendChild(padEl);$('sheet').hidden=false;document.body.style.overflow='hidden';requestAnimationFrame(fit)}
+function closeSheet(ok){padHome.after(padEl);$('sheet').hidden=true;document.body.style.overflow='';requestAnimationFrame(()=>{fit();if(ok&&dirty){preview();$('form').scrollIntoView({behavior:'smooth'});setTimeout(()=>{const f=['fName','fEmail'].map($).find(x=>!x.value.trim());if(f)f.focus()},500)}})}
+$('doc').addEventListener('click',e=>{if(e.target.closest('.gsig'))openSheet()});
+$('doc').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest('.gsig')){e.preventDefault();openSheet()}});
+$('sheetOk').addEventListener('click',()=>{if(!dirty){$('sheetMsg').textContent='서명을 그려 주세요.';return}$('sheetMsg').textContent='';closeSheet(true)});
+$('sheetCancel').addEventListener('click',()=>closeSheet(false));
+$('sheetClear').addEventListener('click',()=>$('bClear').click());
 $('bGo').addEventListener('click',()=>{$('form').scrollIntoView({behavior:'smooth'});setTimeout(()=>$('fName').focus(),500)});
 $('bPdf').addEventListener('click',async e=>{
   const b=e.currentTarget;b.disabled=true;const t=b.textContent;b.textContent='만드는 중…';
